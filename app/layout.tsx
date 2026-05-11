@@ -3,6 +3,7 @@ import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { WishlistProvider } from "@/context/WishlistContext";
 
 const plusJakarta = Plus_Jakarta_Sans({ subsets: ["latin"] });
 
@@ -19,11 +20,13 @@ export default function RootLayout({
   return (
     <html lang="id" className="dark scroll-smooth">
       <body className={`${plusJakarta.className} bg-[#171a21] text-gray-100 flex flex-col min-h-screen antialiased selection:bg-sky-500/30 selection:text-sky-200`}>
-        <Navbar />
-        <main className="flex-1 flex flex-col">
-          {children}
-        </main>
-        <Footer />
+        <WishlistProvider>
+          <Navbar />
+          <main className="flex-1 flex flex-col">
+            {children}
+          </main>
+          <Footer />
+        </WishlistProvider>
       </body>
     </html>
   );
