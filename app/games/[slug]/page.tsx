@@ -40,7 +40,7 @@ export default async function GameDetailPage({
           fill
           loading="eager"
           className="object-cover"
-          sizes="100vw"
+          sizes="(max-width: 768px) 100vw, 100vw"
         />
         <div className="absolute inset-0 bg-linear-to-b from-(--gradient-base-60) to-(--gradient-base)" />
       </div>

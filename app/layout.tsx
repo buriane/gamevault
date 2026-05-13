@@ -3,6 +3,7 @@ import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import SplashScreen from "@/components/SplashScreen";
 import { WishlistProvider } from "@/context/WishlistContext";
 import { ThemeProvider } from "@/context/ThemeProvider";
 
@@ -20,7 +21,21 @@ export default function RootLayout({
 }) {
   return (
     <html lang="id" className="scroll-smooth" data-scroll-behavior="smooth" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              try {
+                if (sessionStorage.getItem('splashShown')) {
+                  document.documentElement.classList.add('skip-splash');
+                }
+              } catch (e) {}
+            `,
+          }}
+        />
+      </head>
       <body className={`${plusJakarta.className} bg-(--bg-primary) text-(--text-primary) flex flex-col min-h-screen antialiased selection:bg-(--selection-bg) selection:text-(--selection-text)`} suppressHydrationWarning>
+        <SplashScreen />
         <ThemeProvider>
           <WishlistProvider>
             <Navbar />

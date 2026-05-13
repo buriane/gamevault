@@ -103,6 +103,10 @@ body {
   color: var(--text-primary);
 }
 
+html.skip-splash #global-splash {
+  display: none !important;
+}
+
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;

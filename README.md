@@ -63,6 +63,7 @@ gamevault/
 │   │   │   └── loading.tsx       # Skeleton loader untuk katalog
 │   │   └── [slug]/               # Dynamic route per game
 │   │       ├── page.tsx          # Detail game (cover, info, screenshots, sidebar)
+│   │       ├── GameDetailContent.tsx # Client component untuk transisi smooth loading
 │   │       └── loading.tsx       # Skeleton loader untuk detail
 │   └── wishlist/
 │       └── page.tsx              # Wishlist page
@@ -76,7 +77,8 @@ gamevault/
 │   ├── FilterBar.tsx             # Search + Sort + Genre/Platform/Year filters
 │   ├── ScreenshotGallery.tsx     # Gallery + Lightbox (keyboard navigable)
 │   ├── WishlistButton.tsx        # Toggle add/remove wishlist
-│   └── PageTransition.tsx        # Framer Motion fade-in + slide-up wrapper
+│   ├── PageTransition.tsx        # Framer Motion fade-in + slide-up wrapper
+│   └── SplashScreen.tsx          # Splash page loading layar awal
 │
 ├── context/                      # React Context providers
 │   ├── ThemeProvider.tsx         # Wrapper next-themes untuk dark/light mode
