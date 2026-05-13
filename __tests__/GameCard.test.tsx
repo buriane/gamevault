@@ -4,6 +4,7 @@ import GameCard from "@/components/GameCard";
 // Mock next/image — render as plain <img>, strip Next.js-specific props
 jest.mock("next/image", () => ({
   __esModule: true,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   default: ({ fill, fetchPriority, sizes, ...props }: Record<string, unknown>) => {
     // eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text
     return <img {...props} />;
