@@ -1,6 +1,62 @@
 "use client";
 
-import { createContext, useContext, useState, useCallback } from "react";
+import {
+  createContext,
+  useContext,
+  useCallback,
+  useSyncExternalStore,
+} from "react";
+
+const WISHLIST_KEY = "gamevault-wishlist";
+const EMPTY_LIST: string[] = [];
+
+// In-tab pub/sub so useSyncExternalStore re-renders after write
+const listeners = new Set<() => void>();
+function emitChange() {
+  for (const fn of listeners) fn();
+}
+function subscribe(listener: () => void) {
+  listeners.add(listener);
+  return () => {
+    listeners.delete(listener);
+  };
+}
+
+// Cached snapshot – useSyncExternalStore requires referential stability
+let cachedRaw: string | null | undefined;
+let cachedParsed: string[] = EMPTY_LIST;
+
+function getSnapshot(): string[] {
+  const raw = localStorage.getItem(WISHLIST_KEY);
+  if (raw !== cachedRaw) {
+    cachedRaw = raw;
+    if (raw) {
+      try {
+        cachedParsed = JSON.parse(raw);
+      } catch {
+        cachedParsed = EMPTY_LIST;
+      }
+    } else {
+      cachedParsed = EMPTY_LIST;
+    }
+  }
+  return cachedParsed;
+}
+
+function getServerSnapshot(): string[] {
+  return EMPTY_LIST;
+}
+
+/** Write to localStorage + invalidate cache + notify subscribers */
+function writeWishlist(updater: (prev: string[]) => string[]) {
+  const current = getSnapshot();
+  const next = updater(current);
+  const json = JSON.stringify(next);
+  cachedRaw = json;
+  cachedParsed = next;
+  localStorage.setItem(WISHLIST_KEY, json);
+  emitChange();
+}
 
 interface WishlistContextType {
   wishlist: string[];
@@ -10,40 +66,24 @@ interface WishlistContextType {
   toggleWishlist: (slug: string) => void;
 }
 
-const WishlistContext = createContext<WishlistContextType | undefined>(undefined);
-
-function getStoredWishlist(): string[] {
-  if (typeof window === "undefined") return [];
-  const stored = localStorage.getItem("gamevault-wishlist");
-  if (stored) {
-    try {
-      return JSON.parse(stored);
-    } catch {
-      return [];
-    }
-  }
-  return [];
-}
+const WishlistContext = createContext<WishlistContextType | undefined>(
+  undefined
+);
 
 export function WishlistProvider({ children }: { children: React.ReactNode }) {
-  const [wishlist, setWishlist] = useState<string[]>(() => getStoredWishlist());
-
-  // Keep localStorage in sync when wishlist changes
-  const updateWishlist = useCallback((updater: (prev: string[]) => string[]) => {
-    setWishlist((prev) => {
-      const next = updater(prev);
-      localStorage.setItem("gamevault-wishlist", JSON.stringify(next));
-      return next;
-    });
-  }, []);
+  const wishlist = useSyncExternalStore(
+    subscribe,
+    getSnapshot,
+    getServerSnapshot
+  );
 
   const addToWishlist = useCallback((slug: string) => {
-    updateWishlist((prev) => (prev.includes(slug) ? prev : [...prev, slug]));
-  }, [updateWishlist]);
+    writeWishlist((prev) => (prev.includes(slug) ? prev : [...prev, slug]));
+  }, []);
 
   const removeFromWishlist = useCallback((slug: string) => {
-    updateWishlist((prev) => prev.filter((s) => s !== slug));
-  }, [updateWishlist]);
+    writeWishlist((prev) => prev.filter((s) => s !== slug));
+  }, []);
 
   const isInWishlist = useCallback(
     (slug: string) => wishlist.includes(slug),
@@ -51,14 +91,20 @@ export function WishlistProvider({ children }: { children: React.ReactNode }) {
   );
 
   const toggleWishlist = useCallback((slug: string) => {
-    updateWishlist((prev) =>
+    writeWishlist((prev) =>
       prev.includes(slug) ? prev.filter((s) => s !== slug) : [...prev, slug]
     );
-  }, [updateWishlist]);
+  }, []);
 
   return (
     <WishlistContext.Provider
-      value={{ wishlist, addToWishlist, removeFromWishlist, isInWishlist, toggleWishlist }}
+      value={{
+        wishlist,
+        addToWishlist,
+        removeFromWishlist,
+        isInWishlist,
+        toggleWishlist,
+      }}
     >
       {children}
     </WishlistContext.Provider>

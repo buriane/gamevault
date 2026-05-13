@@ -40,14 +40,14 @@ export function getAllGenres(): string[] {
 export function getAllPlatforms(): string[] {
   const platforms = new Set<string>();
   getAllGames().forEach((game) =>
-    game.platforms.forEach((p) => platforms.add(p))
+    game.platforms.forEach((p) => platforms.add(p)),
   );
   return Array.from(platforms).sort();
 }
 
 export function getYearRange(): { min: number; max: number } {
   const years = getAllGames().map((game) =>
-    new Date(game.releaseDate).getFullYear()
+    new Date(game.releaseDate).getFullYear(),
   );
   return { min: Math.min(...years), max: Math.max(...years) };
 }
@@ -62,10 +62,22 @@ export function formatPrice(price: number): string {
   }).format(price);
 }
 
+const MONTH_NAMES_ID = [
+  "Januari",
+  "Februari",
+  "Maret",
+  "April",
+  "Mei",
+  "Juni",
+  "Juli",
+  "Agustus",
+  "September",
+  "Oktober",
+  "November",
+  "Desember",
+];
+
 export function formatDate(dateString: string): string {
-  return new Date(dateString).toLocaleDateString("id-ID", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
+  const [year, month, day] = dateString.split("-");
+  return `${parseInt(day, 10)} ${MONTH_NAMES_ID[parseInt(month, 10) - 1]} ${year}`;
 }

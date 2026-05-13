@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { WishlistProvider } from "@/context/WishlistContext";
+import { ThemeProvider } from "@/context/ThemeProvider";
 
 const plusJakarta = Plus_Jakarta_Sans({ subsets: ["latin"] });
 
@@ -18,15 +19,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="id" className="dark scroll-smooth">
-      <body className={`${plusJakarta.className} bg-[#171a21] text-gray-100 flex flex-col min-h-screen antialiased selection:bg-sky-500/30 selection:text-sky-200`}>
-        <WishlistProvider>
-          <Navbar />
-          <main className="flex-1 flex flex-col">
-            {children}
-          </main>
-          <Footer />
-        </WishlistProvider>
+    <html lang="id" className="dark scroll-smooth" data-scroll-behavior="smooth" suppressHydrationWarning>
+      <body className={`${plusJakarta.className} bg-(--bg-primary) text-(--text-primary) flex flex-col min-h-screen antialiased selection:bg-(--selection-bg) selection:text-(--selection-text)`}>
+        <ThemeProvider>
+          <WishlistProvider>
+            <Navbar />
+            <main className="flex-1 flex flex-col">
+              {children}
+            </main>
+            <Footer />
+          </WishlistProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -2,6 +2,7 @@
 
 import { useWishlist } from "@/context/WishlistContext";
 import { getAllGames, formatPrice } from "@/lib/utils";
+import PageTransition from "@/components/PageTransition";
 import Image from "next/image";
 import Link from "next/link";
 import { Heart, Trash2, Star, Gamepad2 } from "lucide-react";
@@ -11,10 +12,11 @@ export default function WishlistPage() {
   const allGames = getAllGames();
 
   const wishlistGames = allGames.filter((game) =>
-    wishlist.includes(game.slug)
+    wishlist.includes(game.slug),
   );
 
   return (
+    <PageTransition>
     <section className="container mx-auto px-6 py-8">
       {/* Header */}
       <div className="mb-8">
@@ -26,7 +28,7 @@ export default function WishlistPage() {
             Wishlist Saya
           </h1>
         </div>
-        <p className="text-gray-400 text-sm">
+        <p className="text-(--text-muted) text-sm">
           {wishlistGames.length > 0
             ? `${wishlistGames.length} game tersimpan di wishlist`
             : "Belum ada game di wishlist"}
@@ -39,7 +41,7 @@ export default function WishlistPage() {
           {wishlistGames.map((game) => (
             <div
               key={game.id}
-              className="flex items-center gap-4 md:gap-6 p-4 bg-[#1b2838] border border-white/5 rounded-2xl hover:border-white/10 transition-all group"
+              className="flex items-center gap-4 md:gap-6 p-4 bg-(--bg-card) border border-(--border-subtle) rounded-2xl hover:border-(--border-default) transition-all group"
             >
               {/* Cover */}
               <Link
@@ -67,7 +69,7 @@ export default function WishlistPage() {
                   {game.genres.slice(0, 2).map((genre) => (
                     <span
                       key={genre}
-                      className="px-2 py-0.5 text-[10px] font-medium bg-white/5 text-gray-400 rounded"
+                      className="px-2 py-0.5 text-[10px] font-medium bg-(--overlay-light) text-(--text-muted) rounded"
                     >
                       {genre}
                     </span>
@@ -98,11 +100,11 @@ export default function WishlistPage() {
       ) : (
         /* Empty state */
         <div className="flex flex-col items-center justify-center py-24 text-center">
-          <div className="w-20 h-20 rounded-2xl bg-white/5 flex items-center justify-center mb-6 border border-white/5">
-            <Gamepad2 className="w-10 h-10 text-gray-600" />
+          <div className="w-20 h-20 rounded-2xl bg-(--overlay-light) flex items-center justify-center mb-6 border border-(--border-subtle)">
+            <Gamepad2 className="w-10 h-10 text-(--text-faint)" />
           </div>
           <h3 className="text-xl font-bold mb-2">Wishlist Kosong</h3>
-          <p className="text-sm text-gray-400 max-w-sm mb-6">
+          <p className="text-sm text-(--text-muted) max-w-sm mb-6">
             Kamu belum menambahkan game apapun ke wishlist. Jelajahi katalog dan
             temukan game favoritmu!
           </p>
@@ -115,5 +117,6 @@ export default function WishlistPage() {
         </div>
       )}
     </section>
+    </PageTransition>
   );
 }

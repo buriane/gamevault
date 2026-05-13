@@ -3,8 +3,9 @@
 import { useState, useMemo } from "react";
 import GameCard from "@/components/GameCard";
 import FilterBar from "@/components/FilterBar";
+import PageTransition from "@/components/PageTransition";
 import { getAllGames, getAllGenres, getAllPlatforms, getYearRange } from "@/lib/utils";
-import { ChevronLeft, ChevronRight, Library } from "lucide-react";
+import { ChevronLeft, ChevronRight, Library, SearchX } from "lucide-react";
 
 const ITEMS_PER_PAGE = 12;
 
@@ -23,14 +24,14 @@ export default function GamesPage() {
 
   const handleGenreToggle = (genre: string) => {
     setSelectedGenres((prev) =>
-      prev.includes(genre) ? prev.filter((g) => g !== genre) : [...prev, genre]
+      prev.includes(genre) ? prev.filter((g) => g !== genre) : [...prev, genre],
     );
     setCurrentPage(1);
   };
 
   const handlePlatformToggle = (platform: string) => {
     setSelectedPlatforms((prev) =>
-      prev.includes(platform) ? prev.filter((p) => p !== platform) : [...prev, platform]
+      prev.includes(platform) ? prev.filter((p) => p !== platform) : [...prev, platform],
     );
     setCurrentPage(1);
   };
@@ -50,6 +51,14 @@ export default function GamesPage() {
     setCurrentPage(1);
   };
 
+  const clearAllFilters = () => {
+    setSearch("");
+    setSelectedGenres([]);
+    setSelectedPlatforms([]);
+    setSelectedYearRange(yearRange);
+    setCurrentPage(1);
+  };
+
   const filteredGames = useMemo(() => {
     let games = [...allGames];
 
@@ -57,21 +66,21 @@ export default function GamesPage() {
     if (search.trim()) {
       const query = search.toLowerCase();
       games = games.filter((game) =>
-        game.title.toLowerCase().includes(query)
+        game.title.toLowerCase().includes(query),
       );
     }
 
     // Genre filter
     if (selectedGenres.length > 0) {
       games = games.filter((game) =>
-        selectedGenres.some((genre) => game.genres.includes(genre))
+        selectedGenres.some((genre) => game.genres.includes(genre)),
       );
     }
 
     // Platform filter
     if (selectedPlatforms.length > 0) {
       games = games.filter((game) =>
-        selectedPlatforms.some((platform) => game.platforms.includes(platform))
+        selectedPlatforms.some((platform) => game.platforms.includes(platform)),
       );
     }
 
@@ -110,10 +119,11 @@ export default function GamesPage() {
   const totalPages = Math.ceil(filteredGames.length / ITEMS_PER_PAGE);
   const paginatedGames = filteredGames.slice(
     (currentPage - 1) * ITEMS_PER_PAGE,
-    currentPage * ITEMS_PER_PAGE
+    currentPage * ITEMS_PER_PAGE,
   );
 
   return (
+    <PageTransition>
     <section className="container mx-auto px-6 py-8">
       {/* Header */}
       <div className="mb-8">
@@ -125,7 +135,7 @@ export default function GamesPage() {
             Katalog Game
           </h1>
         </div>
-        <p className="text-gray-400 text-sm mt-1">
+        <p className="text-(--text-muted) text-sm mt-1">
           Temukan game favoritmu dari koleksi lengkap kami
         </p>
       </div>
@@ -157,13 +167,19 @@ export default function GamesPage() {
         </div>
       ) : (
         <div className="flex flex-col items-center justify-center py-24 text-center">
-          <div className="w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center mb-4">
-            <span className="text-3xl">🎮</span>
+          <div className="w-20 h-20 rounded-2xl bg-(--overlay-light) flex items-center justify-center mb-6 border border-(--border-subtle)">
+            <SearchX className="w-10 h-10 text-(--text-faint)" />
           </div>
-          <h3 className="text-lg font-semibold mb-2">Tidak ada game ditemukan</h3>
-          <p className="text-sm text-gray-400 max-w-sm">
+          <h3 className="text-xl font-bold mb-2">Tidak ada game ditemukan</h3>
+          <p className="text-sm text-(--text-muted) max-w-sm mb-6">
             Coba ubah kata kunci pencarian atau filter yang kamu gunakan.
           </p>
+          <button
+            onClick={clearAllFilters}
+            className="inline-flex items-center gap-2 px-6 py-3 bg-linear-to-r from-sky-500 to-blue-600 text-white font-semibold rounded-xl hover:from-sky-400 hover:to-blue-500 transition-all shadow-lg shadow-blue-500/25"
+          >
+            Reset Semua Filter
+          </button>
         </div>
       )}
 
@@ -173,7 +189,7 @@ export default function GamesPage() {
           <button
             onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
             disabled={currentPage === 1}
-            className="p-2 rounded-lg bg-[#1b2838] border border-white/10 text-gray-400 hover:text-white hover:border-white/20 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+            className="p-2 rounded-lg bg-(--bg-card) border border-(--border-default) text-(--text-muted) hover:text-(--text-primary) hover:border-(--border-hover) disabled:opacity-30 disabled:cursor-not-allowed transition-all"
           >
             <ChevronLeft className="w-4 h-4" />
           </button>
@@ -185,7 +201,7 @@ export default function GamesPage() {
               className={`w-10 h-10 rounded-lg text-sm font-semibold transition-all ${
                 page === currentPage
                   ? "bg-sky-500 text-white shadow-lg shadow-sky-500/25"
-                  : "bg-[#1b2838] border border-white/10 text-gray-400 hover:text-white hover:border-white/20"
+                  : "bg-(--bg-card) border border-(--border-default) text-(--text-muted) hover:text-(--text-primary) hover:border-(--border-hover)"
               }`}
             >
               {page}
@@ -195,12 +211,13 @@ export default function GamesPage() {
           <button
             onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
             disabled={currentPage === totalPages}
-            className="p-2 rounded-lg bg-[#1b2838] border border-white/10 text-gray-400 hover:text-white hover:border-white/20 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+            className="p-2 rounded-lg bg-(--bg-card) border border-(--border-default) text-(--text-muted) hover:text-(--text-primary) hover:border-(--border-hover) disabled:opacity-30 disabled:cursor-not-allowed transition-all"
           >
             <ChevronRight className="w-4 h-4" />
           </button>
         </div>
       )}
     </section>
+    </PageTransition>
   );
 }

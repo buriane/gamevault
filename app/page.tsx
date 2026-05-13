@@ -1,5 +1,6 @@
 import HeroBanner from "@/components/HeroBanner";
 import GameCard from "@/components/GameCard";
+import PageTransition from "@/components/PageTransition";
 import { getFeaturedGames, getAllGames } from "@/lib/utils";
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
@@ -9,7 +10,7 @@ export default function HomePage() {
   const allGames = getAllGames();
 
   return (
-    <>
+    <PageTransition>
       {/* Hero Banner */}
       <HeroBanner games={featured} />
 
@@ -20,7 +21,7 @@ export default function HomePage() {
             <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight">
               Semua Game
             </h2>
-            <p className="text-gray-400 text-sm mt-1">
+            <p className="text-(--text-muted) text-sm mt-1">
               Jelajahi koleksi game terbaik kami
             </p>
           </div>
@@ -39,6 +40,6 @@ export default function HomePage() {
           ))}
         </div>
       </section>
-    </>
+    </PageTransition>
   );
 }

@@ -65,20 +65,20 @@ export default function FilterBar({
       <div className="flex flex-col sm:flex-row gap-3">
         {/* Search */}
         <div className="relative flex-1">
-          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-(--text-muted)" />
           <input
             type="text"
             placeholder="Cari game..."
             value={search}
             onChange={(e) => onSearchChange(e.target.value)}
-            className="w-full pl-10 pr-4 py-3 bg-[#1b2838] border border-white/10 rounded-xl text-sm text-white placeholder:text-gray-500 focus:outline-none focus:border-sky-500/50 focus:ring-1 focus:ring-sky-500/30 transition-all"
+            className="w-full pl-10 pr-4 py-3 bg-(--bg-input) border border-(--border-default) rounded-xl text-sm text-(--text-primary) placeholder:text-(--text-faint) focus:outline-none focus:border-sky-500/50 focus:ring-1 focus:ring-sky-500/30 transition-all"
           />
           {search && (
             <button
               onClick={() => onSearchChange("")}
-              className="absolute right-3 top-1/2 -translate-y-1/2 p-0.5 rounded hover:bg-white/10 transition-colors"
+              className="absolute right-3 top-1/2 -translate-y-1/2 p-0.5 rounded hover:bg-(--overlay-medium) transition-colors"
             >
-              <X className="w-3.5 h-3.5 text-gray-400" />
+              <X className="w-3.5 h-3.5 text-(--text-muted)" />
             </button>
           )}
         </div>
@@ -88,7 +88,7 @@ export default function FilterBar({
           <select
             value={sortBy}
             onChange={(e) => onSortChange(e.target.value)}
-            className="appearance-none w-full sm:w-48 pl-4 pr-10 py-3 bg-[#1b2838] border border-white/10 rounded-xl text-sm text-white focus:outline-none focus:border-sky-500/50 transition-all cursor-pointer"
+            className="appearance-none w-full sm:w-48 pl-4 pr-10 py-3 bg-(--bg-input) border border-(--border-default) rounded-xl text-sm text-(--text-primary) focus:outline-none focus:border-sky-500/50 transition-all cursor-pointer"
           >
             {SORT_OPTIONS.map((option) => (
               <option key={option.value} value={option.value}>
@@ -96,7 +96,7 @@ export default function FilterBar({
               </option>
             ))}
           </select>
-          <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+          <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-(--text-muted) pointer-events-none" />
         </div>
 
         {/* Filter toggle */}
@@ -105,7 +105,7 @@ export default function FilterBar({
           className={`flex items-center gap-2 px-4 py-3 rounded-xl border text-sm font-medium transition-all ${
             showFilters || activeFilterCount > 0
               ? "bg-sky-500/10 border-sky-500/30 text-sky-400"
-              : "bg-[#1b2838] border-white/10 text-gray-400 hover:text-white hover:border-white/20"
+              : "bg-(--bg-input) border-(--border-default) text-(--text-muted) hover:text-(--text-primary) hover:border-(--border-hover)"
           }`}
         >
           <SlidersHorizontal className="w-4 h-4" />
@@ -120,10 +120,10 @@ export default function FilterBar({
 
       {/* Filter panel */}
       {showFilters && (
-        <div className="p-5 bg-[#1b2838] border border-white/10 rounded-2xl space-y-5 animate-in fade-in slide-in-from-top-2">
+        <div className="p-5 bg-(--bg-card) border border-(--border-default) rounded-2xl space-y-5 animate-in fade-in slide-in-from-top-2">
           {/* Genres */}
           <div>
-            <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">
+            <h4 className="text-xs font-semibold text-(--text-muted) uppercase tracking-wider mb-3">
               Genre
             </h4>
             <div className="flex flex-wrap gap-2">
@@ -134,7 +134,7 @@ export default function FilterBar({
                   className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
                     selectedGenres.includes(genre)
                       ? "bg-sky-500/20 text-sky-400 border border-sky-500/30"
-                      : "bg-white/5 text-gray-400 border border-white/5 hover:bg-white/10 hover:text-white"
+                      : "bg-(--overlay-light) text-(--text-muted) border border-(--border-subtle) hover:bg-(--overlay-medium) hover:text-(--text-primary)"
                   }`}
                 >
                   {genre}
@@ -145,7 +145,7 @@ export default function FilterBar({
 
           {/* Platforms */}
           <div>
-            <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">
+            <h4 className="text-xs font-semibold text-(--text-muted) uppercase tracking-wider mb-3">
               Platform
             </h4>
             <div className="flex flex-wrap gap-2">
@@ -156,7 +156,7 @@ export default function FilterBar({
                   className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
                     selectedPlatforms.includes(platform)
                       ? "bg-sky-500/20 text-sky-400 border border-sky-500/30"
-                      : "bg-white/5 text-gray-400 border border-white/5 hover:bg-white/10 hover:text-white"
+                      : "bg-(--overlay-light) text-(--text-muted) border border-(--border-subtle) hover:bg-(--overlay-medium) hover:text-(--text-primary)"
                   }`}
                 >
                   {platform}
@@ -167,7 +167,7 @@ export default function FilterBar({
 
           {/* Year Range */}
           <div>
-            <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">
+            <h4 className="text-xs font-semibold text-(--text-muted) uppercase tracking-wider mb-3">
               Tahun Rilis
             </h4>
             <div className="flex items-center gap-3">
@@ -182,9 +182,9 @@ export default function FilterBar({
                     min: Number(e.target.value),
                   })
                 }
-                className="w-24 px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-sm text-white focus:outline-none focus:border-sky-500/50 transition-all"
+                className="w-24 px-3 py-2 bg-(--overlay-light) border border-(--border-default) rounded-lg text-sm text-(--text-primary) focus:outline-none focus:border-sky-500/50 transition-all"
               />
-              <span className="text-gray-500 text-sm">—</span>
+              <span className="text-(--text-faint) text-sm">—</span>
               <input
                 type="number"
                 min={yearRange.min}
@@ -196,7 +196,7 @@ export default function FilterBar({
                     max: Number(e.target.value),
                   })
                 }
-                className="w-24 px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-sm text-white focus:outline-none focus:border-sky-500/50 transition-all"
+                className="w-24 px-3 py-2 bg-(--overlay-light) border border-(--border-default) rounded-lg text-sm text-(--text-primary) focus:outline-none focus:border-sky-500/50 transition-all"
               />
             </div>
           </div>
@@ -214,8 +214,8 @@ export default function FilterBar({
       )}
 
       {/* Results count */}
-      <p className="text-sm text-gray-500">
-        Menampilkan <span className="text-white font-semibold">{totalResults}</span> game
+      <p className="text-sm text-(--text-faint)">
+        Menampilkan <span className="text-(--text-primary) font-semibold">{totalResults}</span> game
       </p>
     </div>
   );

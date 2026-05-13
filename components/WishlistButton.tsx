@@ -37,7 +37,7 @@ export default function WishlistButton({
       } ${
         inWishlist
           ? "bg-pink-500/20 text-pink-400 border border-pink-500/30 hover:bg-pink-500/30"
-          : "bg-white/10 text-gray-400 border border-white/10 hover:text-white hover:bg-white/15 hover:border-white/20"
+          : "bg-(--overlay-medium) text-(--text-muted) border border-(--border-default) hover:text-(--text-primary) hover:bg-(--overlay-heavy) hover:border-(--border-hover)"
       }`}
       aria-label={inWishlist ? "Remove from wishlist" : "Add to wishlist"}
     >

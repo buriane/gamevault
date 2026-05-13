@@ -27,7 +27,7 @@ export default function ScreenshotGallery({
   const goPrev = () => {
     if (lightboxIndex !== null) {
       setLightboxIndex(
-        (lightboxIndex - 1 + screenshots.length) % screenshots.length
+        (lightboxIndex - 1 + screenshots.length) % screenshots.length,
       );
     }
   };
@@ -40,7 +40,7 @@ export default function ScreenshotGallery({
           <button
             key={index}
             onClick={() => openLightbox(index)}
-            className="relative aspect-video rounded-xl overflow-hidden group cursor-pointer border border-white/5 hover:border-sky-500/30 transition-all"
+            className="relative aspect-video rounded-xl overflow-hidden group cursor-pointer border border-(--border-subtle) hover:border-sky-500/30 transition-all"
           >
             <Image
               src={src}
@@ -61,7 +61,7 @@ export default function ScreenshotGallery({
       {/* Lightbox */}
       {lightboxIndex !== null && (
         <div
-          className="fixed inset-0 z-100 bg-black/90 backdrop-blur-sm flex items-center justify-center p-4 animate-lightbox"
+          className="fixed inset-0 z-100 bg-black/90 backdrop-blur-sm flex flex-col items-center justify-center p-4 animate-lightbox"
           onClick={closeLightbox}
         >
           <button
@@ -70,17 +70,6 @@ export default function ScreenshotGallery({
             aria-label="Close lightbox"
           >
             <X className="w-6 h-6" />
-          </button>
-
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              goPrev();
-            }}
-            className="absolute left-4 p-3 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-colors z-10"
-            aria-label="Previous screenshot"
-          >
-            <ChevronLeft className="w-6 h-6" />
           </button>
 
           <div
@@ -96,34 +85,40 @@ export default function ScreenshotGallery({
             />
           </div>
 
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              goNext();
-            }}
-            className="absolute right-4 p-3 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-colors z-10"
-            aria-label="Next screenshot"
+          <div
+            className="flex items-center gap-4 mt-6"
+            onClick={(e) => e.stopPropagation()}
           >
-            <ChevronRight className="w-6 h-6" />
-          </button>
+            <button
+              onClick={goPrev}
+              className="p-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-colors"
+              aria-label="Previous screenshot"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
 
-          {/* Indicators */}
-          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
-            {screenshots.map((_, index) => (
-              <button
-                key={index}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setLightboxIndex(index);
-                }}
-                className={`w-2 h-2 rounded-full transition-all ${
-                  index === lightboxIndex
-                    ? "bg-sky-400 w-6"
-                    : "bg-white/30 hover:bg-white/50"
-                }`}
-                aria-label={`Go to screenshot ${index + 1}`}
-              />
-            ))}
+            <div className="flex items-center gap-2">
+              {screenshots.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setLightboxIndex(index)}
+                  className={`h-2 rounded-full transition-all ${
+                    index === lightboxIndex
+                      ? "bg-sky-400 w-6"
+                      : "bg-white/30 hover:bg-white/50 w-2"
+                  }`}
+                  aria-label={`Go to screenshot ${index + 1}`}
+                />
+              ))}
+            </div>
+
+            <button
+              onClick={goNext}
+              className="p-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-colors"
+              aria-label="Next screenshot"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
           </div>
         </div>
       )}

@@ -49,11 +49,12 @@ export default function HeroBanner({ games }: HeroBannerProps) {
           src={game.screenshots[0]}
           alt=""
           fill
+          priority
           className="object-cover transition-opacity duration-500"
           sizes="100vw"
         />
-        <div className="absolute inset-0 bg-linear-to-r from-[#171a21] via-[#171a21]/80 to-transparent" />
-        <div className="absolute inset-0 bg-linear-to-t from-[#171a21] via-transparent to-[#171a21]/30" />
+        <div className="absolute inset-0 bg-linear-to-r from-(--gradient-base) via-(--gradient-base-80) to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-t from-(--gradient-base) via-transparent to-(--gradient-base-30)" />
       </div>
 
       {/* Content */}
@@ -66,7 +67,7 @@ export default function HeroBanner({ games }: HeroBannerProps) {
             {game.genres.slice(0, 3).map((genre) => (
               <span
                 key={genre}
-                className="px-2.5 py-1 text-xs font-medium bg-white/10 text-gray-300 rounded-full"
+                className="px-2.5 py-1 text-xs font-medium bg-(--overlay-medium) text-(--text-secondary) rounded-full"
               >
                 {genre}
               </span>
@@ -77,16 +78,16 @@ export default function HeroBanner({ games }: HeroBannerProps) {
             {game.title}
           </h2>
 
-          <p className="text-gray-300 text-sm md:text-base leading-relaxed mb-5 line-clamp-2">
+          <p className="text-(--text-secondary) text-sm md:text-base leading-relaxed mb-5 line-clamp-2">
             {game.description}
           </p>
 
           <div className="flex items-center gap-4 mb-6">
             <div className="flex items-center gap-1.5">
               <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
-              <span className="text-sm font-bold text-white">{game.rating}</span>
+              <span className="text-sm font-bold">{game.rating}</span>
             </div>
-            <span className="text-sm text-gray-400">|</span>
+            <span className="text-sm text-(--text-muted)">|</span>
             <span className="text-sm font-semibold text-sky-400">
               {formatPrice(game.price)}
             </span>
@@ -112,7 +113,7 @@ export default function HeroBanner({ games }: HeroBannerProps) {
                 className={`h-1.5 rounded-full transition-all ${
                   index === currentIndex
                     ? "w-8 bg-sky-400"
-                    : "w-4 bg-white/20 hover:bg-white/40"
+                    : "w-4 bg-(--overlay-heavy) hover:bg-(--overlay-medium)"
                 }`}
                 aria-label={`Go to slide ${index + 1}`}
               />
@@ -123,14 +124,14 @@ export default function HeroBanner({ games }: HeroBannerProps) {
           <div className="flex items-center gap-2">
             <button
               onClick={goPrev}
-              className="p-2 rounded-lg bg-white/10 hover:bg-white/20 transition-colors"
+              className="p-2 rounded-lg bg-(--overlay-medium) hover:bg-(--overlay-heavy) transition-colors"
               aria-label="Previous slide"
             >
               <ChevronLeft className="w-5 h-5" />
             </button>
             <button
               onClick={goNext}
-              className="p-2 rounded-lg bg-white/10 hover:bg-white/20 transition-colors"
+              className="p-2 rounded-lg bg-(--overlay-medium) hover:bg-(--overlay-heavy) transition-colors"
               aria-label="Next slide"
             >
               <ChevronRight className="w-5 h-5" />
