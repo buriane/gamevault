@@ -20,6 +20,9 @@ export default async function GameDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
+
+  await new Promise((resolve) => setTimeout(resolve, 350));
+  
   const game = getGameBySlug(slug);
 
   if (!game) {
@@ -28,7 +31,7 @@ export default async function GameDetailPage({
 
   return (
     <PageTransition>
-    <section className="min-h-screen">
+    <section className="min-h-screen" aria-label={`${game.title} game details`}>
       {/* Hero background */}
       <div className="relative h-64 md:h-80 overflow-hidden">
         <Image
@@ -63,8 +66,9 @@ export default async function GameDetailPage({
             <Link
               href="/games"
               className="inline-flex items-center gap-1.5 text-sm text-(--text-muted) hover:text-(--text-primary) transition-colors mb-4"
+              aria-label="Back to game catalog"
             >
-              <ArrowLeft className="w-4 h-4" />
+              <ArrowLeft className="w-4 h-4" aria-hidden="true" />
               Kembali ke Katalog
             </Link>
 
@@ -79,11 +83,11 @@ export default async function GameDetailPage({
             {/* Meta info */}
             <div className="flex flex-wrap items-center gap-4 mb-6">
               <div className="flex items-center gap-1.5">
-                <Star className="w-5 h-5 text-yellow-400 fill-yellow-400" />
+                <Star className="w-5 h-5 text-yellow-400 fill-yellow-400" aria-hidden="true" />
                 <span className="text-lg font-bold">{game.rating}</span>
-                <span className="text-sm text-(--text-muted)">/ 10</span>
+                <span className="text-sm text-(--text-muted)" aria-hidden="true">/ 10</span>
               </div>
-              <span className="text-(--text-faint)">|</span>
+              <span className="text-(--text-faint)" aria-hidden="true">|</span>
               <span className="text-xl font-bold text-sky-400">
                 {formatPrice(game.price)}
               </span>

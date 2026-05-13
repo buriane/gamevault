@@ -60,7 +60,7 @@ export default function FilterBar({
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4" role="search" aria-label="Game filters">
       {/* Top bar */}
       <div className="flex flex-col sm:flex-row gap-3">
         {/* Search */}
@@ -71,12 +71,14 @@ export default function FilterBar({
             placeholder="Cari game..."
             value={search}
             onChange={(e) => onSearchChange(e.target.value)}
+            aria-label="Search games"
             className="w-full pl-10 pr-4 py-3 bg-(--bg-input) border border-(--border-default) rounded-xl text-sm text-(--text-primary) placeholder:text-(--text-faint) focus:outline-none focus:border-sky-500/50 focus:ring-1 focus:ring-sky-500/30 transition-all"
           />
           {search && (
             <button
               onClick={() => onSearchChange("")}
               className="absolute right-3 top-1/2 -translate-y-1/2 p-0.5 rounded hover:bg-(--overlay-medium) transition-colors"
+              aria-label="Clear search"
             >
               <X className="w-3.5 h-3.5 text-(--text-muted)" />
             </button>
@@ -88,6 +90,7 @@ export default function FilterBar({
           <select
             value={sortBy}
             onChange={(e) => onSortChange(e.target.value)}
+            aria-label="Sort games by"
             className="appearance-none w-full sm:w-48 pl-4 pr-10 py-3 bg-(--bg-input) border border-(--border-default) rounded-xl text-sm text-(--text-primary) focus:outline-none focus:border-sky-500/50 transition-all cursor-pointer"
           >
             {SORT_OPTIONS.map((option) => (
@@ -102,6 +105,9 @@ export default function FilterBar({
         {/* Filter toggle */}
         <button
           onClick={() => setShowFilters(!showFilters)}
+          aria-expanded={showFilters}
+          aria-controls="filter-panel"
+          aria-label={`${showFilters ? "Hide" : "Show"} filters${activeFilterCount > 0 ? ` (${activeFilterCount} active)` : ""}`}
           className={`flex items-center gap-2 px-4 py-3 rounded-xl border text-sm font-medium transition-all ${
             showFilters || activeFilterCount > 0
               ? "bg-sky-500/10 border-sky-500/30 text-sky-400"
@@ -120,10 +126,10 @@ export default function FilterBar({
 
       {/* Filter panel */}
       {showFilters && (
-        <div className="p-5 bg-(--bg-card) border border-(--border-default) rounded-2xl space-y-5 animate-in fade-in slide-in-from-top-2">
+        <div id="filter-panel" className="p-5 bg-(--bg-card) border border-(--border-default) rounded-2xl space-y-5 animate-in fade-in slide-in-from-top-2" role="region" aria-label="Active filters">
           {/* Genres */}
-          <div>
-            <h4 className="text-xs font-semibold text-(--text-muted) uppercase tracking-wider mb-3">
+            <div role="group" aria-labelledby="genre-label">
+            <h4 id="genre-label" className="text-xs font-semibold text-(--text-muted) uppercase tracking-wider mb-3">
               Genre
             </h4>
             <div className="flex flex-wrap gap-2">
@@ -131,6 +137,7 @@ export default function FilterBar({
                 <button
                   key={genre}
                   onClick={() => onGenreToggle(genre)}
+                  aria-pressed={selectedGenres.includes(genre)}
                   className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
                     selectedGenres.includes(genre)
                       ? "bg-sky-500/20 text-sky-400 border border-sky-500/30"
@@ -144,8 +151,8 @@ export default function FilterBar({
           </div>
 
           {/* Platforms */}
-          <div>
-            <h4 className="text-xs font-semibold text-(--text-muted) uppercase tracking-wider mb-3">
+            <div role="group" aria-labelledby="platform-label">
+            <h4 id="platform-label" className="text-xs font-semibold text-(--text-muted) uppercase tracking-wider mb-3">
               Platform
             </h4>
             <div className="flex flex-wrap gap-2">
@@ -153,6 +160,7 @@ export default function FilterBar({
                 <button
                   key={platform}
                   onClick={() => onPlatformToggle(platform)}
+                  aria-pressed={selectedPlatforms.includes(platform)}
                   className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
                     selectedPlatforms.includes(platform)
                       ? "bg-sky-500/20 text-sky-400 border border-sky-500/30"
@@ -166,8 +174,8 @@ export default function FilterBar({
           </div>
 
           {/* Year Range */}
-          <div>
-            <h4 className="text-xs font-semibold text-(--text-muted) uppercase tracking-wider mb-3">
+            <div role="group" aria-labelledby="year-label">
+            <h4 id="year-label" className="text-xs font-semibold text-(--text-muted) uppercase tracking-wider mb-3">
               Tahun Rilis
             </h4>
             <div className="flex items-center gap-3">
@@ -183,8 +191,9 @@ export default function FilterBar({
                   })
                 }
                 className="w-24 px-3 py-2 bg-(--overlay-light) border border-(--border-default) rounded-lg text-sm text-(--text-primary) focus:outline-none focus:border-sky-500/50 transition-all"
+                aria-label="Year range start"
               />
-              <span className="text-(--text-faint) text-sm">—</span>
+              <span className="text-(--text-faint) text-sm" aria-hidden="true">—</span>
               <input
                 type="number"
                 min={yearRange.min}
@@ -197,6 +206,7 @@ export default function FilterBar({
                   })
                 }
                 className="w-24 px-3 py-2 bg-(--overlay-light) border border-(--border-default) rounded-lg text-sm text-(--text-primary) focus:outline-none focus:border-sky-500/50 transition-all"
+                aria-label="Year range end"
               />
             </div>
           </div>

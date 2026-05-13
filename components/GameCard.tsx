@@ -13,6 +13,7 @@ export default function GameCard({ game }: GameCardProps) {
   return (
     <Link
       href={`/games/${game.slug}`}
+      aria-label={`${game.title} — Rating ${game.rating}, ${formatPrice(game.price)}`}
       className="card-shine-effect group relative flex flex-col rounded-2xl overflow-hidden bg-(--bg-card) border border-(--border-subtle) hover:border-sky-500/30 transition-all duration-300 hover:shadow-2xl hover:shadow-sky-500/15 hover:-translate-y-1.5"
     >
       {/* Cover Image */}
@@ -28,7 +29,7 @@ export default function GameCard({ game }: GameCardProps) {
         
         {/* Rating badge */}
         <div className="absolute top-3 right-3 flex items-center gap-1 px-2 py-1 rounded-lg bg-(--badge-bg) backdrop-blur-sm">
-          <Star className="w-3 h-3 text-yellow-400 fill-yellow-400" />
+          <Star className="w-3 h-3 text-yellow-400 fill-yellow-400" aria-hidden="true" />
           <span className="text-xs font-bold text-white">{game.rating}</span>
         </div>
 

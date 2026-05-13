@@ -32,6 +32,20 @@ export default function HeroBanner({ games }: HeroBannerProps) {
     goTo((currentIndex - 1 + games.length) % games.length);
   }, [currentIndex, games.length, goTo]);
 
+  // Keyboard navigation
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        goPrev();
+      } else if (e.key === "ArrowRight") {
+        e.preventDefault();
+        goNext();
+      }
+    },
+    [goPrev, goNext]
+  );
+
   useEffect(() => {
     const timer = setInterval(goNext, 6000);
     return () => clearInterval(timer);
@@ -42,9 +56,21 @@ export default function HeroBanner({ games }: HeroBannerProps) {
   const game = games[currentIndex];
 
   return (
-    <section className="relative w-full overflow-hidden" aria-label="Featured games banner">
+    <section
+      className="relative w-full overflow-hidden"
+      aria-label="Featured games carousel"
+      aria-roledescription="carousel"
+      role="region"
+      tabIndex={0}
+      onKeyDown={handleKeyDown}
+    >
+      {/* Live region for screen readers */}
+      <div className="sr-only" aria-live="polite" aria-atomic="true">
+        Slide {currentIndex + 1} of {games.length}: {game.title}
+      </div>
+
       {/* Background */}
-      <div className="absolute inset-0">
+      <div className="absolute inset-0" aria-hidden="true">
         <Image
           src={game.screenshots[0]}
           alt=""
@@ -84,10 +110,12 @@ export default function HeroBanner({ games }: HeroBannerProps) {
 
           <div className="flex items-center gap-4 mb-6">
             <div className="flex items-center gap-1.5">
-              <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
-              <span className="text-sm font-bold">{game.rating}</span>
+              <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" aria-hidden="true" />
+              <span className="text-sm font-bold" aria-label={`Rating ${game.rating} dari 10`}>
+                {game.rating}
+              </span>
             </div>
-            <span className="text-sm text-(--text-muted)">|</span>
+            <span className="text-sm text-(--text-muted)" aria-hidden="true">|</span>
             <span className="text-sm font-semibold text-sky-400">
               {formatPrice(game.price)}
             </span>
@@ -96,26 +124,29 @@ export default function HeroBanner({ games }: HeroBannerProps) {
           <Link
             href={`/games/${game.slug}`}
             className="inline-flex items-center gap-2 px-6 py-3 bg-linear-to-r from-sky-500 to-blue-600 text-white font-semibold rounded-xl hover:from-sky-400 hover:to-blue-500 transition-all shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40"
+            aria-label={`View details for ${game.title}`}
           >
             View Details
-            <ChevronRight className="w-4 h-4" />
+            <ChevronRight className="w-4 h-4" aria-hidden="true" />
           </Link>
         </div>
 
         {/* Navigation */}
         <div className="flex items-center justify-between mt-8">
           {/* Dots */}
-          <div className="flex items-center gap-2">
-            {games.map((_, index) => (
+          <div className="flex items-center gap-2" role="tablist" aria-label="Slides">
+            {games.map((g, index) => (
               <button
                 key={index}
                 onClick={() => goTo(index)}
+                role="tab"
+                aria-selected={index === currentIndex}
+                aria-label={`Go to slide ${index + 1}: ${g.title}`}
                 className={`h-1.5 rounded-full transition-all ${
                   index === currentIndex
                     ? "w-8 bg-sky-400"
                     : "w-4 bg-(--overlay-heavy) hover:bg-(--overlay-medium)"
                 }`}
-                aria-label={`Go to slide ${index + 1}`}
               />
             ))}
           </div>
@@ -127,14 +158,14 @@ export default function HeroBanner({ games }: HeroBannerProps) {
               className="p-2 rounded-lg bg-(--overlay-medium) hover:bg-(--overlay-heavy) transition-colors"
               aria-label="Previous slide"
             >
-              <ChevronLeft className="w-5 h-5" />
+              <ChevronLeft className="w-5 h-5" aria-hidden="true" />
             </button>
             <button
               onClick={goNext}
               className="p-2 rounded-lg bg-(--overlay-medium) hover:bg-(--overlay-heavy) transition-colors"
               aria-label="Next slide"
             >
-              <ChevronRight className="w-5 h-5" />
+              <ChevronRight className="w-5 h-5" aria-hidden="true" />
             </button>
           </div>
         </div>
