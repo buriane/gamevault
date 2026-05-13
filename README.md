@@ -85,11 +85,8 @@ gamevault/
 ├── data/
 │   └── games.json                # 33 game entries (static data source)
 │
-├── lib/
-│   └── utils.ts                  # Helper functions (getGameBySlug, formatPrice, formatDate, dll.)
-│
-└── public/
-    └── games/                    # Cover images & screenshots
+└── lib/
+    └── utils.ts                  # Helper functions (getGameBySlug, formatPrice, formatDate, dll.)
 ```
 
 ---
@@ -125,9 +122,49 @@ gamevault/
 
 ---
 
-## ⚠️ Area Improvement (Trade-offs)
+## ⚠️ Trade-offs
 
 ### Sinkronisasi Tema (FOUC & Skeleton Loading)
 Awalnya, pas web di-reload dalam kondisi *light mode*, komponen *skeleton loader* sering berkedip pakai warna gelap dulu sebelum pindah ke terang. Ini masalah SSR di mana server gak tau tema apa yang dipilih user di *localStorage*.
 
 **Solusinya:** Kode dark mode buatan sendiri udah dibongkar dan sekarang pakai `next-themes`. Library ini jauh lebih optimal karena nyisipin script khusus yang jalan duluan sebelum browser nge-render UI. Sekarang, *skeleton loading* otomatis ngikutin tema (termasuk *system preference*) dengan sangat mulus tanpa *glitch*.
+
+---
+
+## 🧪 Testing
+
+Unit test menggunakan **Jest** dan **React Testing Library** untuk memverifikasi komponen utama.
+
+### Menjalankan Test
+
+```bash
+npm test
+```
+
+### Coverage
+
+| Komponen | Jumlah Test | Status |
+|----------|-------------|--------|
+| `GameCard` | 8 tests | ✅ PASS |
+| `WishlistButton` | 6 tests | ✅ PASS |
+| **Total** | **14 tests** | **✅ All Pass** |
+
+> Waktu eksekusi: ~3 detik — dijalankan dengan `jest` tanpa flag tambahan.
+
+### Skenario yang Diuji
+
+**GameCard**
+- Render judul, rating, dan genre dari props
+- Format harga dalam IDR (`Rp450.000`)
+- Conditional rendering harga 0 → "Free"
+- Alt text cover image untuk accessibility
+- Link href mengarah ke `/games/[slug]` yang benar
+- Maksimal 2 genre ditampilkan (`.slice(0, 2)`)
+
+**WishlistButton**
+- Label awal "Add to Wishlist"
+- ARIA label deskriptif untuk accessibility
+- Toggle add/remove saat diklik
+- Persistensi ke `localStorage` saat ditambahkan
+- Hapus dari `localStorage` saat di-toggle off
+- Prop `showLabel={false}` menyembunyikan label teks
