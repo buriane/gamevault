@@ -1,15 +1,19 @@
 "use client";
 
+import { useSyncExternalStore } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Gamepad2, Home, Library, Heart, Sun, Moon } from "lucide-react";
 import { useWishlist } from "@/context/WishlistContext";
-import { useTheme } from "@/context/ThemeProvider";
+import { useTheme } from "next-themes";
+
+const emptySubscribe = () => () => {};
 
 export default function Navbar() {
   const pathname = usePathname();
   const { wishlist } = useWishlist();
-  const { resolvedTheme, toggleTheme } = useTheme();
+  const { resolvedTheme, setTheme } = useTheme();
+  const mounted = useSyncExternalStore(emptySubscribe, () => true, () => false);
 
   const mainNavItems = [
     { name: "Home", href: "/", icon: Home },
@@ -24,21 +28,21 @@ export default function Navbar() {
       role="navigation"
       aria-label="Main navigation"
     >
-      <div className="container mx-auto px-6 h-20 flex items-center justify-between">
+      <div className="container mx-auto px-4 sm:px-6 h-14 sm:h-20 flex items-center justify-between">
         <Link
           href="/"
-          className="text-2xl font-extrabold tracking-tighter flex items-center gap-3 group"
+          className="text-xl sm:text-2xl font-extrabold tracking-tighter flex items-center gap-2 sm:gap-3 group shrink-0"
           aria-label="GameVault — Kembali ke beranda"
         >
-          <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-linear-to-br from-sky-400 to-blue-600 shadow-lg shadow-blue-500/25 group-hover:scale-105 transition-transform">
-            <Gamepad2 className="w-5 h-5 text-white" aria-hidden="true" />
+          <div className="flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-linear-to-br from-sky-400 to-blue-600 shadow-lg shadow-blue-500/25 group-hover:scale-105 transition-transform">
+            <Gamepad2 className="w-4 h-4 sm:w-5 sm:h-5 text-white" aria-hidden="true" />
           </div>
           <span className="text-transparent bg-clip-text bg-linear-to-r from-sky-400 to-blue-500">
             GameVault
           </span>
         </Link>
 
-        <div className="flex items-center gap-2 sm:gap-3 text-sm font-medium" role="menubar">
+        <div className="flex items-center gap-1 sm:gap-3 text-sm font-medium" role="menubar">
           {/* Main nav items */}
           {mainNavItems.map((item) => {
             const isActive = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href));
@@ -50,18 +54,18 @@ export default function Navbar() {
                 href={item.href}
                 role="menuitem"
                 aria-current={isActive ? "page" : undefined}
-                className={`group flex items-center gap-3 px-3 py-2 rounded-xl transition-all ${
+                className={`group flex items-center gap-2 sm:gap-3 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg sm:rounded-xl transition-all ${
                   isActive
                     ? "text-(--text-primary) bg-(--overlay-medium)"
                     : "text-(--text-muted) hover:text-(--text-primary) hover:bg-(--overlay-light)"
                 }`}
               >
-                <div className={`p-1.5 rounded-lg transition-colors ${
+                <div className={`p-1 sm:p-1.5 rounded-md sm:rounded-lg transition-colors ${
                   isActive
                     ? "bg-linear-to-br from-sky-500 to-blue-600 text-white shadow-md shadow-blue-500/20"
                     : "bg-(--overlay-light) text-(--text-muted) group-hover:bg-(--overlay-medium) group-hover:text-(--text-primary)"
                 }`}>
-                  <Icon className="w-4 h-4" aria-hidden="true" />
+                  <Icon className="w-3.5 h-3.5 sm:w-4 sm:h-4" aria-hidden="true" />
                 </div>
                 <span className="hidden sm:inline font-semibold">{item.name}</span>
               </Link>
@@ -69,7 +73,7 @@ export default function Navbar() {
           })}
 
           {/* Divider */}
-          <div className="w-px h-8 bg-(--border-default) mx-1" aria-hidden="true" />
+          <div className="w-px h-6 sm:h-8 bg-(--border-default) mx-0.5 sm:mx-1" aria-hidden="true" />
 
           {/* Wishlist */}
           <Link
@@ -77,18 +81,18 @@ export default function Navbar() {
             role="menuitem"
             aria-current={isWishlistActive ? "page" : undefined}
             aria-label={`Wishlist${wishlist.length > 0 ? ` (${wishlist.length} game)` : ""}`}
-            className={`group flex items-center gap-3 px-3 py-2 rounded-xl transition-all ${
+            className={`group flex items-center gap-2 sm:gap-3 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg sm:rounded-xl transition-all ${
               isWishlistActive
                 ? "text-pink-300 bg-pink-500/10 ring-1 ring-pink-500/20"
                 : "text-(--text-muted) hover:text-pink-400 hover:bg-pink-500/5"
             }`}
           >
-            <div className={`relative p-1.5 rounded-lg transition-colors ${
+            <div className={`relative p-1 sm:p-1.5 rounded-md sm:rounded-lg transition-colors ${
               isWishlistActive
                 ? "bg-linear-to-br from-pink-500 to-rose-600 text-white shadow-md shadow-pink-500/20"
                 : "bg-(--overlay-light) text-(--text-muted) group-hover:bg-pink-500/10 group-hover:text-pink-400"
             }`}>
-              <Heart className={`w-4 h-4 ${isWishlistActive ? "fill-white" : ""}`} aria-hidden="true" />
+              <Heart className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${isWishlistActive ? "fill-white" : ""}`} aria-hidden="true" />
               {wishlist.length > 0 && (
                 <span
                   className="absolute -top-1.5 -right-1.5 flex items-center justify-center w-4 h-4 rounded-full bg-pink-500 text-white text-[9px] font-bold ring-2 ring-pink-500/20"
@@ -103,14 +107,18 @@ export default function Navbar() {
 
           {/* Theme toggle */}
           <button
-            onClick={toggleTheme}
-            className="p-2 rounded-xl text-(--text-muted) hover:text-(--text-primary) hover:bg-(--overlay-light) transition-all"
-            aria-label={resolvedTheme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+            onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
+            className="p-1.5 sm:p-2 rounded-lg sm:rounded-xl text-(--text-muted) hover:text-(--text-primary) hover:bg-(--overlay-light) transition-all"
+            aria-label={mounted ? (resolvedTheme === "dark" ? "Switch to light mode" : "Switch to dark mode") : "Toggle theme"}
           >
-            {resolvedTheme === "dark" ? (
-              <Sun className="w-4 h-4" aria-hidden="true" />
+            {mounted ? (
+              resolvedTheme === "dark" ? (
+                <Sun className="w-3.5 h-3.5 sm:w-4 sm:h-4" aria-hidden="true" />
+              ) : (
+                <Moon className="w-3.5 h-3.5 sm:w-4 sm:h-4" aria-hidden="true" />
+              )
             ) : (
-              <Moon className="w-4 h-4" aria-hidden="true" />
+              <div className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             )}
           </button>
         </div>

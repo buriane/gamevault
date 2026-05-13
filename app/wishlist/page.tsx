@@ -17,14 +17,14 @@ export default function WishlistPage() {
 
   return (
     <PageTransition>
-    <section className="container mx-auto px-6 py-8">
+    <section className="container mx-auto px-4 sm:px-6 py-6 sm:py-8">
       {/* Header */}
-      <div className="mb-8">
+      <div className="mb-6 sm:mb-8">
         <div className="flex items-center gap-3 mb-2">
           <div className="p-2 rounded-xl bg-pink-500/10 border border-pink-500/20">
             <Heart className="w-5 h-5 text-pink-400 fill-pink-400" />
           </div>
-          <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight">
             Wishlist Saya
           </h1>
         </div>
@@ -38,20 +38,21 @@ export default function WishlistPage() {
       {/* Wishlist items */}
       {wishlistGames.length > 0 ? (
         <div className="space-y-4">
-          {wishlistGames.map((game) => (
+          {wishlistGames.map((game, index) => (
             <div
               key={game.id}
-              className="flex items-center gap-4 md:gap-6 p-4 bg-(--bg-card) border border-(--border-subtle) rounded-2xl hover:border-(--border-default) transition-all group"
+              className="flex items-center gap-3 sm:gap-4 md:gap-6 p-3 sm:p-4 bg-(--bg-card) border border-(--border-subtle) rounded-xl sm:rounded-2xl hover:border-(--border-default) transition-all group"
             >
               {/* Cover */}
               <Link
                 href={`/games/${game.slug}`}
-                className="shrink-0 relative w-16 h-20 md:w-20 md:h-28 rounded-xl overflow-hidden"
+                className="shrink-0 relative w-12 h-16 sm:w-16 sm:h-20 md:w-20 md:h-28 rounded-lg sm:rounded-xl overflow-hidden"
               >
                 <Image
                   src={game.coverImage}
                   alt={game.title}
                   fill
+                  loading={index < 2 ? "eager" : "lazy"}
                   className="object-cover group-hover:scale-105 transition-transform duration-300"
                   sizes="80px"
                 />

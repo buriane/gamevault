@@ -7,9 +7,10 @@ import { type Game, formatPrice } from "@/lib/utils";
 
 interface GameCardProps {
   game: Game;
+  eager?: boolean;
 }
 
-export default function GameCard({ game }: GameCardProps) {
+export default function GameCard({ game, eager = false }: GameCardProps) {
   return (
     <Link
       href={`/games/${game.slug}`}
@@ -22,19 +23,21 @@ export default function GameCard({ game }: GameCardProps) {
           src={game.coverImage}
           alt={game.title}
           fill
+          loading={eager ? "eager" : "lazy"}
+          fetchPriority={eager ? "high" : "auto"}
           className="object-cover transition-transform duration-500 group-hover:scale-105"
           sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
         />
         <div className="absolute inset-0 bg-linear-to-t from-(--gradient-card) via-transparent to-transparent opacity-60" />
         
         {/* Rating badge */}
-        <div className="absolute top-3 right-3 flex items-center gap-1 px-2 py-1 rounded-lg bg-(--badge-bg) backdrop-blur-sm">
+        <div className="absolute top-2 right-2 sm:top-3 sm:right-3 flex items-center gap-1 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-md sm:rounded-lg bg-(--badge-bg) backdrop-blur-sm">
           <Star className="w-3 h-3 text-yellow-400 fill-yellow-400" aria-hidden="true" />
           <span className="text-xs font-bold text-white">{game.rating}</span>
         </div>
 
         {/* Price badge */}
-        <div className="absolute bottom-3 left-3">
+        <div className="absolute bottom-2 left-2 sm:bottom-3 sm:left-3">
           <span
             className={`px-2.5 py-1 rounded-lg text-xs font-bold ${
               game.price === 0
@@ -48,7 +51,7 @@ export default function GameCard({ game }: GameCardProps) {
       </div>
 
       {/* Info */}
-      <div className="flex flex-col gap-2 p-4 flex-1">
+      <div className="flex flex-col gap-1.5 sm:gap-2 p-2.5 sm:p-4 flex-1">
         <h3 className="font-bold text-sm leading-tight line-clamp-2 group-hover:text-sky-400 transition-colors">
           {game.title}
         </h3>

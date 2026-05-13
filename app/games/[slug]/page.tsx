@@ -33,28 +33,28 @@ export default async function GameDetailPage({
     <PageTransition>
     <section className="min-h-screen" aria-label={`${game.title} game details`}>
       {/* Hero background */}
-      <div className="relative h-64 md:h-80 overflow-hidden">
+      <div className="relative h-40 sm:h-64 md:h-80 overflow-hidden">
         <Image
           src={game.screenshots[0]}
           alt=""
           fill
-          priority
+          loading="eager"
           className="object-cover"
           sizes="100vw"
         />
         <div className="absolute inset-0 bg-linear-to-b from-(--gradient-base-60) to-(--gradient-base)" />
       </div>
 
-      <div className="container mx-auto px-6 -mt-32 relative z-10">
+      <div className="container mx-auto px-4 sm:px-6 -mt-20 sm:-mt-32 relative z-10">
         <div className="flex flex-col md:flex-row gap-8">
           {/* Cover Image */}
-          <div className="shrink-0 w-48 md:w-64">
+          <div className="shrink-0 w-32 sm:w-48 md:w-64 mx-auto md:mx-0">
             <div className="relative aspect-3/4 rounded-2xl overflow-hidden border-2 border-(--border-default) shadow-2xl">
               <Image
                 src={game.coverImage}
                 alt={game.title}
                 fill
-                priority
+                loading="eager"
                 className="object-cover"
                 sizes="256px"
               />
@@ -62,26 +62,26 @@ export default async function GameDetailPage({
           </div>
 
           {/* Info */}
-          <div className="flex-1 pt-4 md:pt-12">
+          <div className="flex-1 pt-2 sm:pt-4 md:pt-12">
             <Link
               href="/games"
-              className="inline-flex items-center gap-1.5 text-sm text-(--text-muted) hover:text-(--text-primary) transition-colors mb-4"
+              className="inline-flex items-center gap-1.5 text-xs sm:text-sm text-(--text-muted) hover:text-(--text-primary) transition-colors mb-3 sm:mb-4"
               aria-label="Back to game catalog"
             >
               <ArrowLeft className="w-4 h-4" aria-hidden="true" />
               Kembali ke Katalog
             </Link>
 
-            <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight mb-3">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight mb-2 sm:mb-3">
               {game.title}
             </h1>
 
-            <p className="text-(--text-secondary) text-base leading-relaxed mb-5">
+            <p className="text-(--text-secondary) text-sm sm:text-base leading-relaxed mb-3 sm:mb-5">
               {game.description}
             </p>
 
             {/* Meta info */}
-            <div className="flex flex-wrap items-center gap-4 mb-6">
+            <div className="flex flex-wrap items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
               <div className="flex items-center gap-1.5">
                 <Star className="w-5 h-5 text-yellow-400 fill-yellow-400" aria-hidden="true" />
                 <span className="text-lg font-bold">{game.rating}</span>
@@ -94,14 +94,15 @@ export default async function GameDetailPage({
             </div>
 
             {/* Action buttons */}
-            <div className="flex items-center gap-3 mb-8">
+            <div className="flex items-center gap-3 mb-6 sm:mb-8">
               <WishlistButton slug={game.slug} size="lg" showLabel />
             </div>
           </div>
         </div>
 
+      <div className="container mx-auto px-4 sm:px-6">
         {/* Details grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-12">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8 mt-8 sm:mt-12">
           {/* Main content */}
           <div className="lg:col-span-2 space-y-10">
             {/* Long description */}
@@ -132,7 +133,7 @@ export default async function GameDetailPage({
           {/* Sidebar */}
           <div className="space-y-6">
             {/* Info card */}
-            <div className="bg-(--bg-card) border border-(--border-subtle) rounded-2xl p-6 space-y-5">
+            <div className="bg-(--bg-card) border border-(--border-subtle) rounded-2xl p-4 sm:p-6 space-y-4 sm:space-y-5">
               <h3 className="text-sm font-semibold text-(--text-muted) uppercase tracking-wider">
                 Informasi Game
               </h3>
@@ -184,7 +185,7 @@ export default async function GameDetailPage({
             </div>
 
             {/* Genres */}
-            <div className="bg-(--bg-card) border border-(--border-subtle) rounded-2xl p-6">
+            <div className="bg-(--bg-card) border border-(--border-subtle) rounded-2xl p-4 sm:p-6">
               <h3 className="text-sm font-semibold text-(--text-muted) uppercase tracking-wider mb-4 flex items-center gap-2">
                 <Tag className="w-4 h-4" />
                 Genre & Tags
@@ -203,9 +204,10 @@ export default async function GameDetailPage({
           </div>
         </div>
       </div>
+      </div>
 
       {/* Bottom spacer */}
-      <div className="h-16" />
+      <div className="h-8 sm:h-16" />
     </section>
     </PageTransition>
   );

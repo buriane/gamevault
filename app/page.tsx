@@ -15,28 +15,28 @@ export default function HomePage() {
       <HeroBanner games={featured} />
 
       {/* All Games Section */}
-      <section className="container mx-auto px-6 py-12">
-        <div className="flex items-center justify-between mb-8">
+      <section className="container mx-auto px-4 sm:px-6 py-8 sm:py-12">
+        <div className="flex items-center justify-between mb-6 sm:mb-8">
           <div>
-            <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold tracking-tight">
               Semua Game
             </h2>
-            <p className="text-(--text-muted) text-sm mt-1">
+            <p className="text-(--text-muted) text-xs sm:text-sm mt-1">
               Jelajahi koleksi game terbaik kami
             </p>
           </div>
           <Link
             href="/games"
-            className="flex items-center gap-1.5 text-sm font-semibold text-sky-400 hover:text-sky-300 transition-colors group"
+            className="flex items-center gap-1 sm:gap-1.5 text-xs sm:text-sm font-semibold text-sky-400 hover:text-sky-300 transition-colors group"
           >
             Lihat Semua
-            <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+            <ChevronRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 group-hover:translate-x-0.5 transition-transform" />
           </Link>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
-          {allGames.slice(0, 10).map((game) => (
-            <GameCard key={game.id} game={game} />
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4 md:gap-6">
+          {allGames.slice(0, 10).map((game, index) => (
+            <GameCard key={game.id} game={game} eager={index < 4} />
           ))}
         </div>
       </section>

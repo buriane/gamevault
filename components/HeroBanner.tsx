@@ -75,7 +75,7 @@ export default function HeroBanner({ games }: HeroBannerProps) {
           src={game.screenshots[0]}
           alt=""
           fill
-          priority
+          loading="eager"
           className="object-cover transition-opacity duration-500"
           sizes="100vw"
         />
@@ -84,46 +84,46 @@ export default function HeroBanner({ games }: HeroBannerProps) {
       </div>
 
       {/* Content */}
-      <div className="relative container mx-auto px-6 py-20 md:py-32 flex flex-col justify-end min-h-[420px] md:min-h-[520px]">
+      <div className="relative container mx-auto px-4 sm:px-6 py-12 sm:py-20 md:py-32 flex flex-col justify-end min-h-[320px] sm:min-h-[420px] md:min-h-[520px]">
         <div className="max-w-2xl">
-          <div className="flex items-center gap-2 mb-3">
-            <span className="px-3 py-1 text-xs font-bold uppercase tracking-wider bg-sky-500/20 text-sky-400 rounded-full border border-sky-500/30">
+          <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-2 sm:mb-3">
+            <span className="px-2 sm:px-3 py-0.5 sm:py-1 text-[10px] sm:text-xs font-bold uppercase tracking-wider bg-sky-500/20 text-sky-400 rounded-full border border-sky-500/30">
               Featured
             </span>
-            {game.genres.slice(0, 3).map((genre) => (
+            {game.genres.slice(0, 2).map((genre) => (
               <span
                 key={genre}
-                className="px-2.5 py-1 text-xs font-medium bg-(--overlay-medium) text-(--text-secondary) rounded-full"
+                className="px-2 py-0.5 sm:px-2.5 sm:py-1 text-[10px] sm:text-xs font-medium bg-(--overlay-medium) text-(--text-secondary) rounded-full"
               >
                 {genre}
               </span>
             ))}
           </div>
 
-          <h2 className="text-3xl md:text-5xl font-extrabold tracking-tight mb-4 leading-tight">
+          <h2 className="text-2xl sm:text-3xl md:text-5xl font-extrabold tracking-tight mb-2 sm:mb-4 leading-tight">
             {game.title}
           </h2>
 
-          <p className="text-(--text-secondary) text-sm md:text-base leading-relaxed mb-5 line-clamp-2">
+          <p className="text-(--text-secondary) text-xs sm:text-sm md:text-base leading-relaxed mb-3 sm:mb-5 line-clamp-2">
             {game.description}
           </p>
 
-          <div className="flex items-center gap-4 mb-6">
+          <div className="flex items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
             <div className="flex items-center gap-1.5">
-              <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" aria-hidden="true" />
-              <span className="text-sm font-bold" aria-label={`Rating ${game.rating} dari 10`}>
+              <Star className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-yellow-400 fill-yellow-400" aria-hidden="true" />
+              <span className="text-xs sm:text-sm font-bold" aria-label={`Rating ${game.rating} dari 10`}>
                 {game.rating}
               </span>
             </div>
-            <span className="text-sm text-(--text-muted)" aria-hidden="true">|</span>
-            <span className="text-sm font-semibold text-sky-400">
+            <span className="text-xs sm:text-sm text-(--text-muted)" aria-hidden="true">|</span>
+            <span className="text-xs sm:text-sm font-semibold text-sky-400">
               {formatPrice(game.price)}
             </span>
           </div>
 
           <Link
             href={`/games/${game.slug}`}
-            className="inline-flex items-center gap-2 px-6 py-3 bg-linear-to-r from-sky-500 to-blue-600 text-white font-semibold rounded-xl hover:from-sky-400 hover:to-blue-500 transition-all shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40"
+            className="inline-flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 text-sm bg-linear-to-r from-sky-500 to-blue-600 text-white font-semibold rounded-xl hover:from-sky-400 hover:to-blue-500 transition-all shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40"
             aria-label={`View details for ${game.title}`}
           >
             View Details
@@ -132,9 +132,9 @@ export default function HeroBanner({ games }: HeroBannerProps) {
         </div>
 
         {/* Navigation */}
-        <div className="flex items-center justify-between mt-8">
+        <div className="flex items-center justify-between mt-6 sm:mt-8">
           {/* Dots */}
-          <div className="flex items-center gap-2" role="tablist" aria-label="Slides">
+          <div className="flex items-center gap-1.5 sm:gap-2" role="tablist" aria-label="Slides">
             {games.map((g, index) => (
               <button
                 key={index}
@@ -144,28 +144,28 @@ export default function HeroBanner({ games }: HeroBannerProps) {
                 aria-label={`Go to slide ${index + 1}: ${g.title}`}
                 className={`h-1.5 rounded-full transition-all ${
                   index === currentIndex
-                    ? "w-8 bg-sky-400"
-                    : "w-4 bg-(--overlay-heavy) hover:bg-(--overlay-medium)"
+                    ? "w-6 sm:w-8 bg-sky-400"
+                    : "w-3 sm:w-4 bg-(--overlay-heavy) hover:bg-(--overlay-medium)"
                 }`}
               />
             ))}
           </div>
 
           {/* Arrows */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2">
             <button
               onClick={goPrev}
-              className="p-2 rounded-lg bg-(--overlay-medium) hover:bg-(--overlay-heavy) transition-colors"
+              className="p-1.5 sm:p-2 rounded-lg bg-(--overlay-medium) hover:bg-(--overlay-heavy) transition-colors"
               aria-label="Previous slide"
             >
-              <ChevronLeft className="w-5 h-5" aria-hidden="true" />
+              <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" aria-hidden="true" />
             </button>
             <button
               onClick={goNext}
-              className="p-2 rounded-lg bg-(--overlay-medium) hover:bg-(--overlay-heavy) transition-colors"
+              className="p-1.5 sm:p-2 rounded-lg bg-(--overlay-medium) hover:bg-(--overlay-heavy) transition-colors"
               aria-label="Next slide"
             >
-              <ChevronRight className="w-5 h-5" aria-hidden="true" />
+              <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" aria-hidden="true" />
             </button>
           </div>
         </div>

@@ -2,12 +2,12 @@ export default function GameDetailLoading() {
   return (
     <section className="min-h-screen animate-in">
       {/* Hero background skeleton */}
-      <div className="relative h-64 md:h-80 overflow-hidden bg-(--overlay-medium) animate-pulse" />
+      <div className="relative h-40 sm:h-64 md:h-80 overflow-hidden bg-(--overlay-medium) animate-pulse" />
 
-      <div className="container mx-auto px-6 -mt-32 relative z-10">
+      <div className="container mx-auto px-4 sm:px-6 -mt-20 sm:-mt-32 relative z-10">
         <div className="flex flex-col md:flex-row gap-8">
           {/* Cover skeleton */}
-          <div className="shrink-0 w-48 md:w-64">
+          <div className="shrink-0 w-32 sm:w-48 md:w-64 mx-auto md:mx-0">
             <div className="aspect-3/4 rounded-2xl bg-(--overlay-medium) border-2 border-(--border-default) shadow-2xl animate-pulse" />
           </div>
 

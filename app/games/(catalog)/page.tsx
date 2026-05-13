@@ -1,18 +1,18 @@
 "use client";
 
-import { useState, useMemo, use } from "react";
+import { useState, useMemo, useEffect } from "react";
 import GameCard from "@/components/GameCard";
 import FilterBar from "@/components/FilterBar";
 import PageTransition from "@/components/PageTransition";
+import GamesLoading from "./loading";
 import { getAllGames, getAllGenres, getAllPlatforms, getYearRange } from "@/lib/utils";
 import { ChevronLeft, ChevronRight, Library, SearchX } from "lucide-react";
 
 const ITEMS_PER_PAGE = 12;
-const delayPromise = new Promise((resolve) => setTimeout(resolve, 350));
 
 export default function GamesPage() {
-  use(delayPromise);
-  
+  const [isLoading, setIsLoading] = useState(true);
+
   const allGames = getAllGames();
   const genres = getAllGenres();
   const platforms = getAllPlatforms();
@@ -24,6 +24,11 @@ export default function GamesPage() {
   const [selectedYearRange, setSelectedYearRange] = useState(yearRange);
   const [sortBy, setSortBy] = useState("rating-desc");
   const [currentPage, setCurrentPage] = useState(1);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 350);
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleGenreToggle = (genre: string) => {
     setSelectedGenres((prev) =>
@@ -125,20 +130,22 @@ export default function GamesPage() {
     currentPage * ITEMS_PER_PAGE,
   );
 
+  if (isLoading) return <GamesLoading />;
+
   return (
     <PageTransition>
-    <section className="container mx-auto px-6 py-8" aria-label="Game catalog">
+    <section className="container mx-auto px-4 sm:px-6 py-6 sm:py-8" aria-label="Game catalog">
       {/* Header */}
-      <div className="mb-8">
+      <div className="mb-6 sm:mb-8">
         <div className="flex items-center gap-3 mb-2">
           <div className="p-2 rounded-xl bg-sky-500/10 border border-sky-500/20">
             <Library className="w-5 h-5 text-sky-400" aria-hidden="true" />
           </div>
-          <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight">
             Katalog Game
           </h1>
         </div>
-        <p className="text-(--text-muted) text-sm mt-1">
+        <p className="text-(--text-muted) text-xs sm:text-sm mt-1">
           Temukan game favoritmu dari koleksi lengkap kami
         </p>
       </div>
@@ -163,9 +170,9 @@ export default function GamesPage() {
 
       {/* Game Grid */}
       {paginatedGames.length > 0 ? (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-4 md:gap-6 mt-6" aria-live="polite" aria-label="Game results">
-          {paginatedGames.map((game) => (
-            <GameCard key={game.id} game={game} />
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6 mt-4 sm:mt-6" aria-live="polite" aria-label="Game results">
+          {paginatedGames.map((game, index) => (
+            <GameCard key={game.id} game={game} eager={index < 4} />
           ))}
         </div>
       ) : (
@@ -188,7 +195,7 @@ export default function GamesPage() {
 
       {/* Pagination */}
       {totalPages > 1 && (
-        <nav className="flex items-center justify-center gap-2 mt-10" aria-label="Pagination">
+        <nav className="flex items-center justify-center gap-1.5 sm:gap-2 mt-8 sm:mt-10" aria-label="Pagination">
           <button
             onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
             disabled={currentPage === 1}
@@ -204,7 +211,7 @@ export default function GamesPage() {
               onClick={() => setCurrentPage(page)}
               aria-label={`Page ${page}`}
               aria-current={page === currentPage ? "page" : undefined}
-              className={`w-10 h-10 rounded-lg text-sm font-semibold transition-all ${
+              className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg text-xs sm:text-sm font-semibold transition-all ${
                 page === currentPage
                   ? "bg-sky-500 text-white shadow-lg shadow-sky-500/25"
                   : "bg-(--bg-card) border border-(--border-default) text-(--text-muted) hover:text-(--text-primary) hover:border-(--border-hover)"

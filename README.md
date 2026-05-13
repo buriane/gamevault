@@ -1,36 +1,133 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🎮 GameVault
 
-## Getting Started
+Katalog game modern dibangun pakai **Next.js 16**. Menampilkan koleksi game lengkap dengan fitur pencarian, filter, sorting, wishlist, dan dark/light mode.
 
-First, run the development server:
+## 📋 Cara Menjalankan
+
+### Requirement
+
+- **Node.js** ≥ 18
+- **npm** ≥ 9
+
+### Instalasi & Menjalankan
 
 ```bash
+# 1. Clone repository
+git clone https://github.com/buriane/gamevault.git
+cd gamevault
+
+# 2. Install dependencies
+npm install
+
+# 3. Jalankan development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Buka [http://localhost:3000](http://localhost:3000) di browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Build Production
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+npm start
+```
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## 🛠 Tech Stack
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+| Teknologi | Versi | Alasan |
+|-----------|-------|--------|
+| **Next.js** | 16.2.6 | Framework utama pilihan karena familiar dengan ekosistem React. Fitur bawaan seperti App Router, `next/image`, `loading.tsx`, dan zero-config deployment ke Vercel sangat relevan untuk project ini. |
+| **React** | 19.2.4 | Hooks terbaru dan performa rendering yang lebih handal. |
+| **TypeScript** | ^5 | Type safety biar gak sering kena runtime error dan enak pas refactoring. |
+| **Tailwind CSS** | v4 | Styling berbasis utility. Dikombinasi dengan CSS variables buat sistem theming yang rapi. |
+| **Framer Motion** | ^12.38 | Buat animasi transisi antar halaman (fade-in + slide-up). |
+| **Lucide React** | ^1.14 | Icon set yang clean dan ringan. |
+| **next-themes** | ^0.4.4 | Library andalan buat handle dark/light mode dengan aman tanpa isu hydration atau FOUC. |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 📁 Struktur Folder
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```
+gamevault/
+├── app/                          # Next.js App Router
+│   ├── layout.tsx                # Root layout (font, theme script, navbar, footer)
+│   ├── page.tsx                  # Homepage (hero banner + game grid)
+│   ├── not-found.tsx             # Custom 404 page
+│   ├── globals.css               # CSS variables (light/dark), animations, scrollbar
+│   ├── games/
+│   │   ├── (catalog)/            # Route group untuk katalog
+│   │   │   ├── page.tsx          # Halaman katalog (search, filter, sort, pagination)
+│   │   │   └── loading.tsx       # Skeleton loader untuk katalog
+│   │   └── [slug]/               # Dynamic route per game
+│   │       ├── page.tsx          # Detail game (cover, info, screenshots, sidebar)
+│   │       └── loading.tsx       # Skeleton loader untuk detail
+│   └── wishlist/
+│       └── page.tsx              # Wishlist page
+│
+├── components/                   # Reusable UI components
+│   ├── Navbar.tsx                # Navigasi utama (responsive, icon-only di mobile)
+│   ├── Footer.tsx                # Footer site
+│   ├── HeroBanner.tsx            # Carousel featured games (auto-rotate + keyboard nav)
+│   ├── GameCard.tsx              # Card game dengan hover effects & shine animation
+│   ├── GameCardSkeleton.tsx      # Skeleton placeholder untuk GameCard
+│   ├── FilterBar.tsx             # Search + Sort + Genre/Platform/Year filters
+│   ├── ScreenshotGallery.tsx     # Gallery + Lightbox (keyboard navigable)
+│   ├── WishlistButton.tsx        # Toggle add/remove wishlist
+│   └── PageTransition.tsx        # Framer Motion fade-in + slide-up wrapper
+│
+├── context/                      # React Context providers
+│   ├── ThemeProvider.tsx         # Wrapper next-themes untuk dark/light mode
+│   └── WishlistContext.tsx       # State management wishlist (localStorage)
+│
+├── data/
+│   └── games.json                # 33 game entries (static data source)
+│
+├── lib/
+│   └── utils.ts                  # Helper functions (getGameBySlug, formatPrice, formatDate, dll.)
+│
+└── public/
+    └── games/                    # Cover images & screenshots
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## ✅ Fitur
+
+### Core Features
+- [x] **Katalog Game**: Grid responsif (2/3/4 kolom) dengan search, sort (6 opsi), filter multi-select genre/platform/tahun
+- [x] **Detail Game**: Hero background, cover image, rating, harga, deskripsi, screenshots, info sidebar
+- [x] **Wishlist**: Persistent via localStorage, toggle dari detail page, badge count di navbar
+- [x] **Pagination**: 12 item per halaman dengan navigasi halaman
+- [x] **404 Page**: Custom not-found page
+
+### UI/UX Enhancements
+- [x] **Dark/Light Mode**: Toggle via navbar, system preference detection, persistent via localStorage
+- [x] **Skeleton Loaders**: Tampil saat navigasi antar halaman games dan detail game
+- [x] **Page Transition Animations**: Fade-in + slide-up via Framer Motion
+- [x] **Hover Effects**: Card shine sweep animation (CSS), scale on hover, color transitions
+- [x] **Empty States**: Desain khusus untuk wishlist kosong dan zero search results
+- [x] **Responsive Design**: Mobile-first, compact navbar, proper stacking pada semua breakpoint
+- [x] **Custom Scrollbar**: Themed scrollbar yang cocok dengan dark/light mode
+
+### Accessibility
+- [x] **ARIA Labels**: Semua interactive element punya label deskriptif
+- [x] **Keyboard Navigation**: Hero carousel (← →), Screenshot lightbox (← →)
+- [x] **ARIA Landmarks**: `role="navigation"`, `role="main"`, `role="contentinfo"`
+- [x] **Screen Reader Support**: `aria-live` regions, `aria-current="page"`, `aria-expanded`
+
+### Performance
+- [x] **Next.js Image Optimization**: Pakai `loading="eager"` dan `fetchPriority="high"` buat image LCP, plus `sizes` responsif.
+- [x] **Font Optimization**: `Plus_Jakarta_Sans` via `next/font` (anti FOUT).
+- [x] **Optimasi Theming**: Di-handle oleh `next-themes` biar transisi loading dan tema smooth.
+
+---
+
+## ⚠️ Area Improvement (Trade-offs)
+
+### Sinkronisasi Tema (FOUC & Skeleton Loading)
+Awalnya, pas web di-reload dalam kondisi *light mode*, komponen *skeleton loader* sering berkedip pakai warna gelap dulu sebelum pindah ke terang. Ini masalah SSR di mana server gak tau tema apa yang dipilih user di *localStorage*.
+
+**Solusinya:** Kode dark mode buatan sendiri udah dibongkar dan sekarang pakai `next-themes`. Library ini jauh lebih optimal karena nyisipin script khusus yang jalan duluan sebelum browser nge-render UI. Sekarang, *skeleton loading* otomatis ngikutin tema (termasuk *system preference*) dengan sangat mulus tanpa *glitch*.

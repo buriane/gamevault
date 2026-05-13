@@ -10,7 +10,6 @@ import {
 const WISHLIST_KEY = "gamevault-wishlist";
 const EMPTY_LIST: string[] = [];
 
-// In-tab pub/sub so useSyncExternalStore re-renders after write
 const listeners = new Set<() => void>();
 function emitChange() {
   for (const fn of listeners) fn();
@@ -22,7 +21,6 @@ function subscribe(listener: () => void) {
   };
 }
 
-// Cached snapshot – useSyncExternalStore requires referential stability
 let cachedRaw: string | null | undefined;
 let cachedParsed: string[] = EMPTY_LIST;
 
@@ -47,7 +45,6 @@ function getServerSnapshot(): string[] {
   return EMPTY_LIST;
 }
 
-/** Write to localStorage + invalidate cache + notify subscribers */
 function writeWishlist(updater: (prev: string[]) => string[]) {
   const current = getSnapshot();
   const next = updater(current);
