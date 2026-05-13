@@ -6,6 +6,7 @@ import { getAllGames, getGameBySlug, formatPrice, formatDate } from "@/lib/utils
 import ScreenshotGallery from "@/components/ScreenshotGallery";
 import WishlistButton from "@/components/WishlistButton";
 import PageTransition from "@/components/PageTransition";
+import GameDetailContent from "./GameDetailContent";
 
 export async function generateStaticParams() {
   const games = getAllGames();
@@ -20,8 +21,6 @@ export default async function GameDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-
-  await new Promise((resolve) => setTimeout(resolve, 350));
   
   const game = getGameBySlug(slug);
 
@@ -30,6 +29,7 @@ export default async function GameDetailPage({
   }
 
   return (
+    <GameDetailContent>
     <PageTransition>
     <section className="min-h-screen" aria-label={`${game.title} game details`}>
       {/* Hero background */}
@@ -210,5 +210,6 @@ export default async function GameDetailPage({
       <div className="h-8 sm:h-16" />
     </section>
     </PageTransition>
+    </GameDetailContent>
   );
 }
